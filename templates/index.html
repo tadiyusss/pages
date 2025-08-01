@@ -1,0 +1,66 @@
+{% extends "template.html" %}
+{% block title %}{{ g.settings['site_title'] }}{% endblock %}
+{% block content %}
+    <header class="bg-[url('https://images.pexels.com/photos/466685/pexels-photo-466685.jpeg')] text-white bg-center bg-cover bg-no-repeat relative">
+        <!-- Dark overlay -->
+        
+        <div class="absolute inset-0 h-full w-full bg-black/50 z-0"></div>
+        <div class="relative z-10">
+            {% include "components/navigation.html" %}
+        </div>
+        <div class="relative py-24 p-4">
+            <div class="max-w-7xl mx-auto relative z-10">
+                <h1 class="text-4xl max-w-2xl font-medium">This is the heading of this section</h1>
+                <p class="max-w-lg text-zinc-200">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum deserunt perspiciatis, consequatur sapiente quos deleniti numquam suscipit aliquam.</p>
+            </div>
+        </div>
+    </header>
+    <div class="space-y-8 p-4 my-10">
+        <div class="max-w-6xl mx-auto space-y-4">
+            <div>
+                <h4 class="text-3xl font-medium text-zinc-700">Latest Articles</h4>
+                <p class="text-gray-500">Explore fresh content, insights, and updates curated just for you.</p>
+            </div>
+            <div class="grid grid-cols-5 gap-4">
+                <div class="md:col-span-3 col-span-5">
+                    <div>
+                        <img src="https://images.pexels.com/photos/1239162/pexels-photo-1239162.jpeg" class="w-full object-cover">
+                        <div class="py-2">
+                            <h4 class="text-lg font-medium line-clamp-3">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minima enim corporis veniam nam, in nulla?</h4>
+                            <p class="text-sm text-gray-500 line-clamp-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ullam porro alias rerum voluptas numquam!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:col-span-2 col-span-5 grid md:grid-cols-1 grid-cols-2 md:gap-4 gap-4">
+                    {% for x in range(2) %}
+                    <div class="col-span-1">
+                        <img src="https://images.pexels.com/photos/1239162/pexels-photo-1239162.jpeg" class="w-full md:h-64 object-cover">
+                        <div class="py-2">
+                            <h4 class="md:text-lg font-medium md:line-clamp-3 line-clamp-2">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minima enim corporis veniam nam, in nulla?</h4>
+                            <p class="text-sm text-gray-500 line-clamp-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ullam porro alias rerum voluptas numquam!</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+        </div>  
+        <div class="max-w-6xl mx-auto">
+            <h4 class="text-2xl font-medium">All Articles</h4>
+            <p class="text-gray-500 text-sm">Discover a wide range of articles covering topics that matter to you.</p>
+            <div class="grid lg:grid-cols-4 grid-cols-2 gap-4 mt-4">
+                {% for x in range(8) %}
+                <div>
+                    <img src="https://images.pexels.com/photos/1123972/pexels-photo-1123972.jpeg" class="w-full h-40 object-cover">
+                    <div class="my-2">
+                        <h4 class="font-medium line-clamp-2">This is the title of this article</h4>
+                        <p class="line-clamp-3 text-sm text-gray-600">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illum dignissimos optio numquam officiis non ea in quisquam accusantium mollitia magni. Aut praesentium dolores ducimus error expedita placeat maxime iste similique quis earum odit blanditiis, quaerat aliquam molestias vero nisi optio recusandae, dolorem minus fugiat libero aperiam beatae. Error rem illum, repudiandae eveniet cupiditate aliquam nemo illo voluptate odio modi corrupti ea perferendis dolores aspernatur provident exercitationem veniam recusandae asperiores minima natus laudantium. Iusto, libero ab pariatur animi adipisci commodi mollitia repudiandae molestiae excepturi suscipit nostrum magnam facilis vel error consequatur dolor reprehenderit. Minus molestias quo, quia nihil sit harum fugit eveniet quaerat vel itaque a nostrum impedit enim autem voluptatem!</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+    {% include "components/footer.html" %}
+{% endblock %}

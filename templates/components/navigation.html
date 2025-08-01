@@ -1,0 +1,15 @@
+<nav class="w-full p-4 flex items-center text-white justify-between flex-wrap" x-data="{ open_nav: false }">
+        <div class="flex items-center justify-between w-full md:w-auto">
+        <h4 class="text-lg">{{ g.settings['site_title'] }}</h4>
+        <button class="md:hidden block border p-2 rounded cursor-pointer border-gray-300/50" @click="open_nav = !open_nav" aria-label="Toggle Navigation">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" class="size-5">
+                <path fill-rule="evenodd" d="M2 4.75A.75.75 0 0 1 2.75 4h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 4.75ZM2 10a.75.75 0 0 1 .75-.75h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 10Zm0 5.25a.75.75 0 0 1 .75-.75h14.5a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    </div>
+    <ul class="w-full md:w-auto md:flex md:items-center mt-4 md:mt-0 md:space-y-0 text-sm md:space-x-4" :class="{ 'hidden': !open_nav }" class="md:flex">
+        <li><a href="#" class="block md:p-0 p-2 md:hover:bg-transparent hover:bg-zinc-900/20 rounded">Home</a></li>
+        <li><a href="#" class="block md:p-0 p-2 md:hover:bg-transparent hover:bg-zinc-900/20 rounded">About Us</a></li>
+        <li><a href="#" class="block md:p-0 p-2 md:hover:bg-transparent hover:bg-zinc-900/20 rounded">Contact Us</a></li>
+    </ul>
+</nav>
