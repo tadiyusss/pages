@@ -1,1 +1,45 @@
-{% extends "base/dashboard/base.html" %}
+{% extends "dashboard/base.html" %}
+
+{% block main %}
+    <div class="w-full border rounded-lg p-4 bg-white shadow-sm max-w-7xl mx-auto">
+        <div class="space-y-8 text-zinc-800">
+            <div class="border-b pb-2 flex items-center justify-between">
+                <div class="block">
+                    <h4 class="text-lg">Manage Contents</h4>
+                    <p class="text-gray-400 text-sm">Overview and management of published and draft content for your site.</p>
+                </div>
+                <a href="{{ url_for('pages.create_content') }}" class="text-sm rounded px-4 py-1 rounded border shadow text-gray-700 hover:bg-gray-50 ease duration-200">Create Page</a>
+            </div>
+            <div class="border rounded">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-gray-50 border-b">
+                            <th class="text-left font-normal text-sm text-gray-400 py-2 px-4 rounded-tl">Title</th>
+                            <th class="text-left font-normal text-sm text-gray-400 py-2 px-4">Author</th>
+                            <th class="text-left font-normal text-sm text-gray-400 py-2 px-4">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-sm border-t hover:bg-gray-50 ease duration-200">
+                            <td class="py-2 px-4 max-w-40">
+                                <p class="w-full truncate">How to Create a HTML File Using VSCode Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam reiciendis nihil quae enim corporis laudantium nobis sequi! Tempore non sint, enim iusto eligendi repudiandae quia harum vero facilis sequi soluta?</p>
+                                <div class="flex items-center md:space-x-6 space-x-2">
+                                    <a href="#" class="text-xs text-blue-600">Edit</a>
+                                    <a href="#" class="text-xs text-blue-600">View</a>
+                                    <a href="#" class="text-xs text-red-600">Thrash</a>
+                                </div>
+                            </td>
+                            <td class="py-2 px-4">Thaddeus Toledo</td>
+                            <td class="py-2 px-4">Aug 23, 2025</td>
+                        </tr>
+                        <tr class="text-sm border-t">
+                            <td class="py-2 px-4 text-center" colspan="4">
+                                <p>No Contents Found</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
