@@ -5,14 +5,14 @@ from flask_login import login_required
 
 
 @bp.route('/dashboard/contents', methods=['GET'])
-@role_required('Administrator')
+@role_required(['Administrator', 'Editor'])
 @login_required
 def contents():
     return render_template('dashboard/contents.html')
 
 
 @bp.route('/dashboard/contents/create', methods=['GET'])
-@role_required('Administrator')
+@role_required(['Administrator', 'Editor'])
 @login_required
 def create_content():
     return render_template('dashboard/contents/create.html')
