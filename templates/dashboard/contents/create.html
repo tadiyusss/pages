@@ -1,0 +1,82 @@
+{% extends "dashboard/base.html" %}
+
+{% block main %}
+    <div class="w-full border rounded-lg p-4 bg-white shadow-sm max-w-7xl mx-auto space-y-4">
+        <button class="px-2 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 ease duration-200 text-sm">Save</button>
+        <div id="editorjs"></div>
+    </div>
+{% endblock %}
+
+{% block include_javascript %}
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/list@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@2.7.6/dist/quote.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/simple-image"></script>
+<script src="https://cdn.jsdelivr.net/npm/editorjs-inline-image"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/table@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/code@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/editorjs-drag-drop"></script>
+<script src="https://cdn.jsdelivr.net/npm/editorjs-undo"></script>
+
+<script>
+
+    const editor = new EditorJS({
+        holder: 'editorjs',
+        tools: {
+            List: {
+                class: EditorjsList,
+                inlineToolbar: true,
+                config: {
+                    defaultStyle: 'unordered'
+                }
+            },
+            header: {
+                class: Header,
+                inlineToolbar: true
+            },
+            paragraph: {
+                class: Paragraph,
+                inlineToolbar: true
+            },
+            quote: {
+                class: Quote,
+                inlineToolbar: true,
+                config: {
+                    quotePlaceholder: "Enter a quote.",
+                    captionPlaceholder: "Quote's Author"
+                }
+            },
+            image: SimpleImage,
+            inlineImage: {
+                class: InlineImage,
+                inlineToolbar: true
+            },
+            table: Table,
+            code: CodeTool,
+        },
+        data: {
+            blocks: [
+                {
+                    type: "header",
+                    data: {
+                        text: "Welcome to Pages.",
+                        level: 2
+                    }
+                },
+                {
+                    type: "paragraph",
+                    data: {
+                        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus sequi voluptatibus vitae repellat obcaecati tempore dolores temporibus eaque fugiat architecto recusandae harum, cumque eligendi ipsa quis molestiae modi repudiandae earum tenetur magni, delectus quisquam assumenda! Eum, sapiente ipsum numquam cum doloremque reprehenderit molestias laborum facere accusantium nulla omnis maxime ad veniam unde. Laborum excepturi veniam nemo quae, odio itaque voluptatum iure autem ratione, alias reiciendis sint delectus ipsa fugiat. Expedita id aut nisi assumenda impedit commodi ipsa natus cumque! Est veritatis eaque porro odio voluptatum quia quam nostrum nam iste, a, mollitia omnis assumenda eius sunt ipsam error corporis! Itaque impedit quia et nobis ea placeat velit ullam veniam in."
+                    }
+                }
+            ]
+        },
+        onReady: () => {
+            new DragDrop(editor),
+            new Undo({ editor });
+        }
+    });
+</script>
+{% endblock %}
