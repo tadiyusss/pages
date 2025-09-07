@@ -2,7 +2,7 @@ from flask import Blueprint
 from .metadata import TEMPLATE_FOLDER, STATIC_FOLDER
 from .initialization.sidebar import register_sidebar_items
 
-bp = Blueprint('pages', __name__, template_folder=TEMPLATE_FOLDER, static_folder=STATIC_FOLDER) 
+bp = Blueprint('pages', __name__, template_folder=TEMPLATE_FOLDER, static_folder=STATIC_FOLDER, static_url_path="/static/pages")
 
 from .routes import admin, public
 
