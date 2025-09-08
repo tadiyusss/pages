@@ -1,0 +1,73 @@
+{% extends "dashboard/base.html" %}
+{% block main %}
+    <div class="w-full border rounded-lg p-4 bg-white shadow-sm max-w-4xl mx-auto" x-data="{ model_open: false }">
+        <div class="space-y-8 text-zinc-800">
+            <div class="border-b pb-2 flex items-center justify-between">
+                <div class="block">
+                    <h4 class="text-lg">Manage Category</h4>
+                    <p class="text-gray-400 text-sm">Overview and management of published and draft categories for your site.</p>
+                </div>
+                <button @click="model_open = true" class="text-sm rounded px-4 py-1 border shadow text-gray-700 hover:bg-gray-50 ease duration-200">Create Category</button>
+            </div>
+            <div class="border rounded">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-gray-50 border-b">
+                            <th class="text-left font-normal text-sm text-gray-400 py-2 px-4 rounded-tl">Name</th>
+                            <th class="text-left font-normal text-sm text-gray-400 py-2 px-4">Description</th>
+                            <th class="text-left font-normal text-sm text-gray-400 py-2 px-4">Created By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if categories|length == 0 %}
+                            <tr class="text-sm border-t">
+                                <td class="py-2 px-4 text-center" colspan="4">
+                                    <p>No Contents Found</p>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% for category in categories %}
+                        <tr class="text-sm border-t hover:bg-gray-50 ease duration-200">
+                            <td class="py-2 px-4 max-w-40">
+                                <p class="w-full truncate">{{ category.name }}</p>
+                                <div class="flex items-center md:space-x-6 space-x-2">
+                                    <a href="#" class="text-xs text-blue-600">Edit</a>
+                                    <a href="{{ url_for('pages.delete_category', uuid = category.uuid ) }}" class="text-xs text-red-600">Thrash</a>
+                                </div>
+                            </td>
+                            <td class="py-2 px-4"><p class="line-clamp-1">{{ category.description }}</p></td>
+                            <td class="py-2 px-4">{{ category.created_by }}</td>
+                        </tr>
+                        {% endfor %}
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <form method="POST" x-show="model_open" x-transition class="fixed inset-0 flex items-center justify-center z-50">
+            <div @click="model_open = false" class="absolute inset-0 bg-black bg-opacity-50"></div>
+
+            <div @click.away="model_open = false" class="relative bg-white rounded-lg shadow-lg w-full max-w-md z-50">
+                <div class="w-full p-4" id="model-header">
+                    <h1 class="text-lg">Create Category</h1>
+                </div>
+                <div class="p-4 border-y">
+                    <div class="space-y-2">
+                        {{ form.hidden_tag() }}
+                        <div>
+                            <label for="{{ form.name.id }}" class="text-sm text-gray-700">{{ form.name.label }}</label>
+                            {{ form.name }}
+                        </div>
+                        <div>
+                            <label for="{{ form.description.id }}" class="text-sm text-gray-700">{{ form.description.label }}</label>
+                            {{ form.description }}
+                        </div>
+                    </div>
+                </div>
+                <div id="modal-footer" class="p-4">
+                    {{ form.submit }}
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

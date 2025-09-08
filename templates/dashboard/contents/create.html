@@ -1,10 +1,47 @@
 {% extends "dashboard/base.html" %}
-
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('pages.static', filename='css/content.css') }}">
+{% endblock %}
 {% block main %}
-    <div class="space-y-4">
+    <div class="space-y-4" x-data="{
+        blog_title: 'This is my blog name',
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque iusto velit eveniet, odio reiciendis, totam eligendi illum, inventore soluta accusantium aliquam? Repudiandae corporis soluta libero aspernatur laudantium enim hic commodi!',
+        thumbnail: `{{ url_for('pages.static', filename='images/placeholder.png') }}`,
+        save_content: function() {
+            editor.save().then((output_data) => {
+                
+                output_data['blog_title'] = this.blog_title;
+                output_data['description'] = this.description;
+                output_data['thumbnail'] = this.thumbnail;
+                output_data['category'] = document.getElementById('category').value;
+                console.log('Data saved: ', output_data);
+                fetch('/dashboard/contents/save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(output_data)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        new FlashMessage('Failed to save content. Please try again.', 'error').show();
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    new FlashMessage('Content saved successfully!', 'success').show();
+                })
+                .catch(error_message => {
+                    new FlashMessage('Failed to save content. Please try again.', 'error').show();
+                })
+            }).catch((error) => {
+                new FlashMessage('Failed to save content. Please try again.', 'error').show();
+            });
+        }
+    }">
         <div class="container flex items-center space-x-4">
             <div class="space-x-4 flex items-center">
-                <button class="shadow-inner bg-white border px-3 py-1 rounded hover:bg-gray-50 ease duration-200 text-sm flex items-center space-x-2">
+                <button class="shadow-inner bg-white border px-3 py-1 rounded hover:bg-gray-50 ease duration-200 text-sm flex items-center space-x-2" @click="save_content()">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
                     </svg>
@@ -21,15 +58,11 @@
             </div>
         </div>
         <div class="container md:flex md:space-x-4 space-y-4">
-            <div class="w-full border rounded-lg p-4 bg-white shadow-sm max-w-3xl">
+            <div class="w-full border rounded-lg p-4 bg-white shadow-sm">
                 <div id="editorjs"></div>
             </div>
-            <div class="w-full space-y-4 md:max-w-96 mx-auto" x-data="{
-                blog_title: 'This is my blog name',
-                description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque iusto velit eveniet, odio reiciendis, totam eligendi illum, inventore soluta accusantium aliquam? Repudiandae corporis soluta libero aspernatur laudantium enim hic commodi!',
-                thumbnail: `{{ url_for('pages.static', filename='placeholder.png') }}`
-            }">
-                <h4 class="text-2xl font-medium">Content</h4>
+            <div class="w-full space-y-4 md:max-w-96 mx-auto">
+                <h4 class="text-2xl font-medium">Card Preview</h4>
                 <div class="w-full mx-auto">
                     <img :src="thumbnail" id="image_placeholder" class="w-full h-48 object-cover rounded">
                     <div class="mt-2 space-y-1">
@@ -37,6 +70,7 @@
                         <p class="text-sm text-gray-500 line-clamp-3" x-text="description"></p>
                     </div>
                 </div>
+                <h4 class="text-2xl font-medium">Content</h4>
                 <form action="" method="post" class="space-y-2 mx-auto">
                     <div> 
                         <label class="flex justify-center w-full h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none">
@@ -85,11 +119,11 @@
                     </div>
                     <div class="space-y-1">
                         <label class="text-sm text-gray-600 font-medium">Category</label>
-                        <select name="" id="" class="w-full border px-2 py-1 rounded text-sm">
-                            <option value="category_1">Category 1</option>
-                            <option value="category_2">Category 2</option>
-                            <option value="category_3">Category 3</option>
-                            <option value="category_4">Category 4</option>
+                        <select name="category" id="category" class="w-full border px-2 py-1 rounded text-sm">
+                            <option value="none">None</option>
+                            {% for category in categories %}
+                                <option value="{{ category.uuid }}">{{ category.name }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </form>
@@ -114,10 +148,7 @@
 <script src="{{ url_for('static', filename='js/utilities.js') }}"></script>
 
 <script>
-    function on_file_upload(event) {
-        
-    }
-    const editor = new EditorJS({
+    var editor = new EditorJS({
         holder: 'editorjs',
         tools: {
             List: {
@@ -156,8 +187,7 @@
                 {
                     type: "header",
                     data: {
-                        text: "Welcome to Pages.",
-                        level: 2
+                        text: "Welcome to Pages."
                     }
                 },
                 {
