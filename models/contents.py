@@ -22,6 +22,19 @@ class Blog(db.Model):
     author_name = db.Column(db.String(100), nullable=False)
     date_created = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
 
+    def to_json(self):
+        return {
+            'id': self.id,
+            'uuid': self.uuid,
+            'title': self.title,
+            'description': self.description,
+            'thumbnail': self.thumbnail,
+            'category_id': self.category_id,
+            'version': self.version,
+            'author_name': self.author_name,
+            'date_created': self.date_created
+        }
+
 class Block(db.Model):
     __tablename__ = 'blocks'
     id = db.Column(db.Integer, primary_key=True)

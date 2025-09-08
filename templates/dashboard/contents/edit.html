@@ -4,9 +4,10 @@
 {% endblock %}
 {% block main %}
     <div class="space-y-4" x-data="{
-        blog_title: 'This is my blog name',
-        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque iusto velit eveniet, odio reiciendis, totam eligendi illum, inventore soluta accusantium aliquam? Repudiandae corporis soluta libero aspernatur laudantium enim hic commodi!',
-        thumbnail: `{{ url_for('pages.static', filename='images/placeholder.png') }}`,
+        blog_title: '{{ blog.title }}',
+        description: '{{ blog.description }}',
+        thumbnail: `{{ blog.thumbnail }}`,
+        uuid: '{{ blog.uuid }}',
         save_content: function() {
             editor.save().then((output_data) => {
                 
@@ -14,7 +15,7 @@
                 output_data['description'] = this.description;
                 output_data['thumbnail'] = this.thumbnail;
                 output_data['category'] = document.getElementById('category').value;
-                console.log('Data saved: ', output_data);
+                output_data['uuid'] = this.uuid;
                 fetch('/dashboard/contents/save', {
                     method: 'POST',
                     headers: {
@@ -31,7 +32,6 @@
                 .then(result => {
                     new FlashMessage('Content saved successfully!', 'success').show();
                     console.log(result)
-                    window.location.href = `/dashboard/contents/edit/${result.blog_uuid}`;
                 })
                 .catch(error_message => {
                     new FlashMessage('Failed to save content. Please try again.', 'error').show();

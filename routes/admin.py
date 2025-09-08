@@ -70,25 +70,62 @@ def create_content():
 @login_required
 def save_content():
     data = request.get_json()
-    blog = Blog(
-        title = data.get('blog_title'),
-        description = data.get('description'),
-        thumbnail = data.get('thumbnail'),
-        version = data.get('version'),
-        category_id = data.get('category') if data.get('category') != 'none' else None,
-        author_name = f"{current_user.firstname} {current_user.lastname}"
-    )
-    db.session.add(blog)
-    db.session.commit()
-    for block in data.get('blocks', []):
-        new_block = Block(
-            blog_id=blog.id,
-            block_type=block.get('type'),
-            data=block.get('data').get('text'),
-            
+
+    if data.get('uuid'):
+        blog = Blog.query.filter_by(uuid=data.get('uuid')).first_or_404()
+
+        blog.title = data.get('blog_title')
+        blog.description = data.get('description')
+        blog.thumbnail = data.get('thumbnail')
+        blog.version = data.get('version')
+        blog.category_id = data.get('category') if data.get('category') != 'none' else None
+
+        Block.query.filter_by(blog_id=blog.id).delete()
+        db.session.commit()
+
+        for block in data.get('blocks'):
+            new_block = Block(
+                blog_id=blog.id,
+                block_type=block.get('type'),
+                data=block.get('data').get('text'),
+            )
+            db.session.add(new_block)
+        
+        db.session.commit()
+        return jsonify({'message': 'Content updated successfully!', 'blog_uuid': blog.uuid}), 200
+    else:
+        blog = Blog(
+            title = data.get('blog_title'),
+            description = data.get('description'),
+            thumbnail = data.get('thumbnail'),
+            version = data.get('version'),
+            category_id = data.get('category') if data.get('category') != 'none' else None,
+            author_name = f"{current_user.firstname} {current_user.lastname}"
         )
-        db.session.add(new_block)
-    db.session.commit()
+        db.session.add(blog)
+        db.session.commit()
+        for block in data.get('blocks', []):
+            new_block = Block(
+                blog_id=blog.id,
+                block_type=block.get('type'),
+                data=block.get('data').get('text'),
+                
+            )
+            db.session.add(new_block)
+        db.session.commit()
 
-    return jsonify({'message': 'Content saved successfully!'}), 200
+    return jsonify({'message': 'Content saved successfully!', 'blog_uuid': blog.uuid}), 200
 
+@bp.route('/dashboard/contents/view/<string:uuid>', methods=['GET'])
+@role_required(['Administrator', 'Editor'])
+@login_required
+def view_content(uuid):
+    blog = Blog.query.filter_by(uuid=uuid).first_or_404()
+    return render_template('dashboard/contents/view.html', blog=blog)
+
+@bp.route('/dashboard/contents/edit/<string:uuid>', methods=['GET'])
+@role_required(['Administrator', 'Editor'])
+@login_required
+def edit_content(uuid):
+    blog = Blog.query.filter_by(uuid=uuid).first_or_404()
+    return render_template('dashboard/contents/edit.html', blog=blog)

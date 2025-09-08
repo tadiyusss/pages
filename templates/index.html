@@ -19,19 +19,17 @@
         <div class="max-w-6xl mx-auto">
             <h4 class="text-2xl font-medium">All Articles</h4>
             <p class="text-gray-500 text-sm">Discover a wide range of articles covering topics that matter to you.</p>
-            <div class="grid lg:grid-cols-4 grid-cols-2 gap-4 mt-4">
-                {% for x in range(8) %}
-                <div>
-                    <img src="https://images.pexels.com/photos/1123972/pexels-photo-1123972.jpeg" class="w-full h-40 object-cover">
+            <div class="grid lg:grid-cols-3 grid-cols-2 gap-4 mt-4">
+                {% for blog in blogs %}
+                <a href="{{ url_for('pages.view_blog', uuid=blog.uuid) }}">
+                    <img src="{{ blog.thumbnail }}" class="w-full h-54 object-cover rounded">
                     <div class="my-2">
-                        <h4 class="font-medium line-clamp-2">This is the title of this article</h4>
-                        <p class="line-clamp-3 text-sm text-gray-600">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illum dignissimos optio numquam officiis non ea in quisquam accusantium mollitia magni. Aut praesentium dolores ducimus error expedita placeat maxime iste similique quis earum odit blanditiis, quaerat aliquam molestias vero nisi optio recusandae, dolorem minus fugiat libero aperiam beatae. Error rem illum, repudiandae eveniet cupiditate aliquam nemo illo voluptate odio modi corrupti ea perferendis dolores aspernatur provident exercitationem veniam recusandae asperiores minima natus laudantium. Iusto, libero ab pariatur animi adipisci commodi mollitia repudiandae molestiae excepturi suscipit nostrum magnam facilis vel error consequatur dolor reprehenderit. Minus molestias quo, quia nihil sit harum fugit eveniet quaerat vel itaque a nostrum impedit enim autem voluptatem!</p>
+                        <h4 class="font-medium line-clamp-2">{{ blog.title }}</h4>
+                        <p class="line-clamp-3 text-sm text-gray-600">{{ blog.description }}</p>
                     </div>
-                </div>
+                </a>
                 {% endfor %}
             </div>
-
         </div>
     </div>
-    {% include "components/footer.html" %}
 {% endblock %}
