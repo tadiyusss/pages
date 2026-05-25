@@ -1,4 +1,5 @@
 NAME = "Pages"
+SLUG = "pages"
 DESCRIPTION = "Create and organize static pages within your content management system."
 VERSION = "0.1-dev"
 DEPENDENCIES = []
